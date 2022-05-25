@@ -11,32 +11,32 @@ public class Class {
         this.grade = grade;
     }
 
-
     public String getClassName() {
-        return this.className;
-    }
-
-    public int getPeriod() {
-        return this.period;
-    }
-
-    public String getGrade() {
-        return this.grade;
-    }
-
-    public void setGrade(String grade) {
-        this.grade = grade;
+        return className;
     }
 
     public void setClassName(String className) {
         this.className = className;
     }
 
+    public int getPeriod() {
+        return period;
+    }
+
     public void setPeriod(int period) {
         this.period = period;
     }
 
+    public String getGrade() {
+        return grade;
+    }
+
+    public void setGrade(String grade) {
+        this.grade = grade;
+    }
+
+    @Override
     public String toString() {
-        return this.className + " " + this.grade + " " + this.period;
+        return className + " " + grade + " " + period;
      }
 }
