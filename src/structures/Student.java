@@ -1,110 +1,67 @@
 package structures;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
-public class Student {
-    private String id;
-    private Teacher teacher;
-    private String firstName;
-    private String lastName;
-    private char middleInitial;
-    private int age;
-    private int grade;
-    private ArrayList<Class> classes;
+public class Student extends Person {
+	private final static Random RNG = new Random();
 
-    public Student(String id, Teacher teacher, String firstName, String lastName, char middleInitial, int age, int grade, ArrayList<Class> classes) {
-        this.id = id;
-        this.teacher = teacher;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.middleInitial = middleInitial;
-        this.age = age;
-        this.grade = grade;
-        this.classes = classes;
-    }
+	private final String id = generateId(6);
+	private Teacher teacher;
+	private int grade;
+	private final List<Class> classes = new ArrayList<>();
 
-    public String getFirstName() {
-        return this.firstName;
-    }
+	public Student(LocalDate birthday, Name name, Teacher teacher, int grade, List<Class> classes) {
+		super(birthday, name);
+		this.teacher = teacher;
+		this.grade = grade;
+		this.classes.addAll(classes);
+	}
 
-    public String getLastName() {
-        return this.lastName;
-    }
+	public String getId() {
+		return id;
+	}
 
-    public char getMiddleInitial() {
-        return this.middleInitial;
-    }
+	public Teacher getTeacher() {
+		return teacher;
+	}
 
-    public int getAge() {
-        return this.age;
-    }
+	public void setTeacher(Teacher teacher) {
+		this.teacher = teacher;
+	}
 
-    public int getGrade() {
-        return this.grade;
-    }
+	public int getGrade() {
+		return grade;
+	}
 
-    public String getFullName(){
-        return this.firstName + " " + this.middleInitial + " " + this.lastName;
-    }
+	public String getStringGrade() {
+		return grade + switch (grade) {
+			case 1 -> "st";
+			case 2 -> "nd";
+			case 3 -> "rd";
+			default -> "th";
+		};
+	}
 
-    public ArrayList<Class> getClasses() {
-        return this.classes;
-    }
+	public void setGrade(int grade) {
+		this.grade = grade;
+	}
 
-    public void setFirstName(String firstName){
-        this.firstName = firstName;
-    }
+	public List<Class> getClasses() {
+		return classes;
+	}
 
-    public void setLastName(String lastName){
-        this.lastName = lastName;
-    }
+	private static String generateId(int idLength) {
+		int leftLimit = 48;
+		int rightLimit = 122;
 
-    public void setMiddleInitial(char middleInitial){
-        this.middleInitial = middleInitial;
-    }
-
-    public void setAge(int age) {
-        this.age = age;
-    }
-
-    public void setGrade(int grade) {
-        this.grade = grade;
-    }
-
-    public void setClasses(ArrayList<Class> classes){
-        this.classes = classes;
-    }
-
-    public Teacher getTeacher() {
-        return this.teacher;
-    }
-
-    public void setTeacher(Teacher teacher) {
-        this.teacher = teacher;
-    }
-
-    public int getNumberOfClasses() {
-        return this.classes.size();
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public static String generateId(int idLength) {
-        int leftLimit = 48;
-        int rightLimit = 122;
-        Random random = new Random();
-
-        return random.ints(leftLimit, rightLimit+1)
-                .filter(i -> (i <= 57 || i >= 65) && (i <= 90 || i >= 97))
-                .limit(idLength)
-                .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
-                .toString();
-    }
+		return RNG.ints(leftLimit, rightLimit + 1)
+				.filter(i -> (i <= 57 || i >= 65) && (i <= 90 || i >= 97))
+				.limit(idLength)
+				.mapToObj(Character::toString)
+				.collect(Collectors.joining());
+	}
 }
